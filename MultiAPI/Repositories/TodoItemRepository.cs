@@ -9,14 +9,14 @@ namespace MultiAPI.Repositories
 {
     public class TodoItemRepository : ITodoItemRepository
     {
-        private readonly ApplicationDbContext _context;
+        private readonly TodoItemContext _context;
         //Query the database using the TodoItem context
 
         //Constructor (it is how we inject it)
 
         //Add() adds the instance of the todolist
         //SaveChangesAsync() insert the data into the database
-        public TodoItemRepository(ApplicationDbContext context)
+        public TodoItemRepository(TodoItemContext context)
         {
             _context = context;
         }

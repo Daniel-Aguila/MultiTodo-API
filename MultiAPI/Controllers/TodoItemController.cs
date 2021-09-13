@@ -10,9 +10,9 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace MultiAPI.Controllers
 {
-    
-    [ApiController]
+    //[ApiController]
     [Route("api/[controller]")]
+    [Authorize(AuthenticationSchemes = JwtConstantsModel.AuthSchemes)]
     public class TodoItemController : ControllerBase
     {
         private readonly ITodoItemRepository _todoitemrepository;

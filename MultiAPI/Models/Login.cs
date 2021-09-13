@@ -8,10 +8,12 @@ namespace MultiAPI.Models
 {
     public class Login
     {
-        [Required(ErrorMessage = "Username is required")]
-        public string Username { get; set; }
 
-        [Required(ErrorMessage = "Password is required")]
+        [Required, EmailAddress]
+        public string Email { get; set; }
+
+        [Required]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
 
     }

@@ -100,3 +100,4 @@ C:\Users\dagui\source\repos\Multi-TODO\MultiAPI\bin\Debug\net5.0\Microsoft.AspNe
 C:\Users\dagui\source\repos\Multi-TODO\MultiAPI\bin\Debug\net5.0\Microsoft.Bcl.AsyncInterfaces.dll
 C:\Users\dagui\source\repos\Multi-TODO\MultiAPI\bin\Debug\net5.0\Microsoft.Identity.Client.Extensions.Msal.dll
 C:\Users\dagui\source\repos\Multi-TODO\MultiAPI\bin\Debug\net5.0\Microsoft.Identity.Web.dll
+C:\Users\dagui\source\repos\Multi-TODO\MultiAPI\bin\Debug\net5.0\System.Text.Encodings.Web.dll

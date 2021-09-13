@@ -20,7 +20,6 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Cors;
 
-
 namespace MultiAPI
 {
     public class Startup
@@ -37,18 +36,18 @@ namespace MultiAPI
         {
             services.AddCors();
             services.AddScoped<ITodoItemRepository, TodoItemRepository>();
-            //services.AddDbContext<TodoItemContext>(options => options.UseSqlite("TodoItems.db"));
+            services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddDbContext<TodoItemContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<TodoItemContext>();
             services.AddControllers();
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.SignIn.RequireConfirmedAccount = false;
+                options.SignIn.RequireConfirmedPhoneNumber = false;
+            });
             //install the identity framework
             //Add ASP.NET Core Identity
-            //services.AddIdentity<IdentityUser, IdentityRole>()
-                //.AddEntityFrameworkStores<TodoItemContext>();
-            services.AddEntityFrameworkSqlServer()
-                .AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
-
 
             services.AddAuthentication(options =>
             {
@@ -56,6 +55,7 @@ namespace MultiAPI
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
             })
+                .AddCookie(c => c.SlidingExpiration = true)
                 .AddJwtBearer(options =>
                 {
                     options.TokenValidationParameters = new TokenValidationParameters()
@@ -63,9 +63,9 @@ namespace MultiAPI
                         ValidateIssuer = true,
                         ValidateAudience = true,
                         ValidateLifetime = false,
-                        ValidAudience = Configuration["JWT:ValidAudience"],
-                        ValidIssuer = Configuration["JWT:ValidIssuer"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:Key"]))
+                        ValidAudience = JwtConstantsModel.Audience,
+                        ValidIssuer = JwtConstantsModel.Issuer,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtConstantsModel.Key))
                     };
                 });
 
@@ -116,8 +116,8 @@ namespace MultiAPI
                     .AllowCredentials()); // allow credentials
             //Add Authentication middleware
 
-            app.UseAuthentication();
             app.UseRouting();
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
